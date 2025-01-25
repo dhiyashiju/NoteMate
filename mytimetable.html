@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Timetable | TodoMaster</title>
+    <link rel="stylesheet" href="timetable-styles.css">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">TodoMaster</div>
+        <div class="date" id="currentDate"></div>
+    </div>
+
+    <div class="main-content">
+        <div class="timetable-setup">
+            <div class="input-group">
+                <label>Wake Up Time</label>
+                <input type="time" id="wakeTime" class="timetable-input">
+            </div>
+            <div class="input-group">
+                <label>Sleep Time</label>
+                <input type="time" id="sleepTime" class="timetable-input">
+            </div>
+            <div class="input-group">
+                <label>Daily Leisure Hours</label>
+                <input type="number" id="leisureHours" class="timetable-input"min="0" max="6">
+            </div>
+                    <div class="class-hours-setup">
+            <h3>Daily Class Hours</h3>
+            <div class="days-class-hours">
+                <div class="day-class-input">
+                    <label>Monday</label>
+                    <input type="time" id="mondayClassStart" class="class-time-input">
+                    <span>to</span>
+                    <input type="time" id="mondayClassEnd" class="class-time-input">
+                </div>
+                <div class="day-class-input">
+                    <label>Tuesday</label>
+                    <input type="time" id="tuesdayClassStart" class="class-time-input">
+                    <span>to</span>
+                    <input type="time" id="tuesdayClassEnd" class="class-time-input">
+                </div>
+                <div class="day-class-input">
+                    <label>Wednesday</label>
+                    <input type="time" id="wednesdayClassStart" class="class-time-input">
+                    <span>to</span>
+                    <input type="time" id="wednesdayClassEnd" class="class-time-input">
+                </div>
+                <div class="day-class-input">
+                    <label>Thursday</label>
+                    <input type="time" id="thursdayClassStart" class="class-time-input">
+                    <span>to</span>
+                    <input type="time" id="thursdayClassEnd" class="class-time-input">
+                </div>
+                <div class="day-class-input">
+                    <label>Friday</label>
+                    <input type="time" id="fridayClassStart" class="class-time-input">
+                    <span>to</span>
+                    <input type="time" id="fridayClassEnd" class="class-time-input">
+                </div>
+            </div>
+            <button class="btn" onclick="generateTimetable()">Generate Timetable</button>
+        </div>
+        <div class="weekly-timetable">
+            <h2>Weekly Timetable</h2>
+            <div id="timetableContent">
+                <div class="days-grid">
+                    <div class="day-column">
+                        <h3>Monday</h3>
+                        <div class="time-slots" id="mondaySlots"></div>
+                    </div>
+                    <div class="day-column">
+                        <h3>Tuesday</h3>
+                        <div class="time-slots" id="tuesdaySlots"></div>
+                    </div>
+                    <div class="day-column">
+                        <h3>Wednesday</h3>
+                        <div class="time-slots" id="wednesdaySlots"></div>
+                    </div>
+                    <div class="day-column">
+                        <h3>Thursday</h3>
+                        <div class="time-slots" id="thursdaySlots"></div>
+                    </div>
+                    <div class="day-column">
+                        <h3>Friday</h3>
+                        <div class="time-slots" id="fridaySlots"></div>
+                    </div>
+                    <div class="day-column">
+                        <h3>Saturday</h3>
+                        <div class="time-slots" id="saturdaySlots"></div>
+                    </div>
+                    <div class="day-column">
+                        <h3>Sunday</h3>
+                        <div class="time-slots" id="sundaySlots"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatDate(date) {
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            return date.toLocaleDateString('en-US', options);
+        }
+        document.getElementById('currentDate').textContent = formatDate(new Date());
+
+        function generateTimetable() {
+            const wakeTime = document.getElementById('wakeTime').value;
+            const sleepTime = document.getElementById('sleepTime').value;
+            const leisureHours = document.getElementById('leisureHours').value;
+            const classHours = document.getElementById('classHours').value;
+
+            // Placeholder for timetable generation logic
+            const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+            
+            days.forEach(day => {
+                const slots = document.getElementById(`${day}Slots`);
+                slots.innerHTML = ''; // Clear previous slots
+
+                // Generate time slots based on input
+                const timeSlots = [
+                    { time: wakeTime, activity: 'Morning Routine', type: 'routine' },
+                    { time: '08:00', activity: 'Study Time', type: 'study' },
+                    { time: '12:00', activity: 'Lunch Break', type: 'break' },
+                    { time: '14:00', activity: 'Class', type: 'class' },
+                    { time: '18:00', activity: 'Leisure', type: 'leisure' },
+                    { time: sleepTime, activity: 'Bedtime Routine', type: 'routine' }
+                ];
+
+                timeSlots.forEach(slot => {
+                    const slotElement = document.createElement('div');
+                    slotElement.classList.add('time-slot', `type-${slot.type}`);
+                    slotElement.innerHTML = `
+                        <span class="slot-time">${slot.time}</span>
+                        <span class="slot-activity">${slot.activity}</span>
+                    `;
+                    slots.appendChild(slotElement);
+                });
+            });
+        }
+    </script>
+</body>
+</html>

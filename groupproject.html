@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Group Project Management</title>
+    <link rel="stylesheet" href="grouproject-styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Group Project Management</h1>
+
+        <div class="project-setup">
+            <h2>Project Details</h2>
+            <input type="text" id="project-name" placeholder="Enter Project Name" required>
+
+            <h2>Project Parts</h2>
+            <div id="project-parts-container">
+                <div class="part-entry">
+                    <input type="text" class="part-name" placeholder="Part Name" required>
+                    <input type="email" class="member-email" placeholder="Member Email" required>
+                    <select class="status-dropdown">
+                        <option value="not-started">Not Started</option>
+                        <option value="doing">Doing</option>
+                        <option value="paused">Paused</option>
+                        <option value="rework">Rework</option>
+                        <option value="done">Done</option>
+                    </select>
+                    <div class="file-upload">
+                        <label for="file-upload">Upload File:</label>
+                        <input type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png" id="file-upload">
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button id="add-part-btn">Add Part</button>
+                <button id="submit-project-btn">Create Project</button>
+            </div>
+        </div>
+
+        <div class="previous-projects">
+            <h2>Previous Projects</h2>
+            <div class="project-list">
+                <div class="project-item">
+                    <div class="project-name">Web Development Project</div>
+                    <div class="project-status in-progress">In Progress</div>
+                </div>
+                <div class="project-item">
+                    <div class="project-name">Marketing Campaign</div>
+                    <div class="project-status completed">Completed</div>
+                </div>
+                <div class="project-item">
+                    <div class="project-name">Mobile App Design</div>
+                    <div class="project-status pending">Pending</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('add-part-btn').addEventListener('click', function() {
+            const container = document.getElementById('project-parts-container');
+            const newPartEntry = document.querySelector('.part-entry').cloneNode(true);
+            
+            newPartEntry.querySelector('.part-name').value = '';
+            newPartEntry.querySelector('.member-email').value = '';
+            newPartEntry.querySelector('.status-dropdown').selectedIndex = 0;
+            newPartEntry.querySelector('#file-upload').value = '';
+            
+            container.appendChild(newPartEntry);
+        });
+    </script>
+</body>
+</html>

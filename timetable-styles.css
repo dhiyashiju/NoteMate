@@ -1,0 +1,131 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0e6ff;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #e6d6ff;
+}
+
+.logo {
+    font-size: 24px;
+    color: #6a5acd;
+    font-weight: bold;
+}
+
+.date {
+    color: #8a7db8;
+}
+
+.main-content {
+    padding: 20px;
+}
+
+.timetable-setup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.timetable-input {
+    padding: 10px;
+    border: 1px solid #d1c4e9;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+.btn {
+    padding: 10px 20px;
+    background-color: #6a5acd;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.weekly-timetable {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+.day-column {
+    background-color: #f0e6ff;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.time-slots {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.time-slot {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #e6d6ff;
+}
+
+.time-slot .slot-time {
+    font-weight: bold;
+    color: #6a5acd;
+}
+
+.class-hours-setup {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.days-class-hours {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.day-class-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.class-time-input {
+    padding: 8px;
+    border: 1px solid #d1c4e9;
+    border-radius: 5px;
+}
+
+.day-class-input label {
+    min-width: 80px;
+    color: #6a5acd;
+}
+.type-routine { background-color: #b39ddb; }
+.type-study { background-color: #d1c4e9; }
+.type-break { background-color: #e6d6ff; }
+.type-class { background-color: #9fa8da; }
+.type-leisure { background-color: #80deea; }

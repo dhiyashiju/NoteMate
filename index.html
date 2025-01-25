@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TodoMaster</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">ToDoMaster</div>
+        <div class="date" id="currentDate"></div>
+    </div>
+
+    <div class="main-content">
+        <input type="text" class="search-bar" placeholder="Search tasks...">
+        
+        <p class="description">
+            Organize your tasks, boost your productivity, and stay on top of your goals.
+        </p>
+
+        <div class="action-buttons">
+            <button><a href="file:///C:/Users/HP/Desktop/Project/thingstodo.html">Things To Do</button>
+            <button><a href="file:///C:/Users/HP/Desktop/Project/mytimetable.html">My Time-Table</button>
+            <button><a href="file:///C:/Users/HP/Desktop/Project/groupproject.html">Group Project</button>
+            <button>My Community</button>
+            <button>Calculate My CGPA</button>
+        </div>
+    </div>
+
+
+   
+
+    <div class="footer">
+        <div class="news-updates">
+            <h3>Latest News</h3>
+            <p>No updates at the moment.</p>
+        </div>
+        <div class="productivity-chart">
+            <div class="productivity-score">75%</div>
+        </div>
+    </div>
+
+    <script>
+        // Update current date
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString();
+    </script>
+</body>
+</html>

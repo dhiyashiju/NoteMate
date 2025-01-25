@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Things to Do | TodoMaster</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .task-input-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            background-color: #f0e6ff;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .task-input {
+            padding: 10px;
+            border: 1px solid #d1c4e9;
+            border-radius: 5px;
+            background-color: white;
+        }
+
+        .priority-dropdown {
+            padding: 10px;
+            border: 1px solid #d1c4e9;
+            border-radius: 5px;
+            background-color: white;
+        }
+
+        .task-list {
+            width: 80%;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #e6e6fa;
+        }
+
+        .progress-bar {
+            width: 200px;
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: #6a5acd;
+            transition: width 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">TodoMaster</div>
+        <div class="date" id="currentDate"></div>
+    </div>
+
+    <div class="main-content">
+        <div class="task-input-container">
+            <input type="text" class="task-input" placeholder="Enter Task" style="width: 300px;">
+            
+            <input type="datetime-local" class="task-input">
+            
+            <select class="priority-dropdown">
+                <option value="">Select Priority</option>
+                <option value="low">Low Priority</option>
+                <option value="medium">Medium Priority</option>
+                <option value="high">High Priority</option>
+            </select>
+            
+            <button class="btn">Add Task</button>
+        </div>
+
+        <div class="task-list">
+            <h2>Previous Tasks</h2>
+            <div class="task-item">
+                <span>Complete Project Proposal</span>
+                <span>Due: 30 January 2025</span>
+                <span>Priority: High</span>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 60%"></div>
+                </div>
+                <span>60% Complete</span>
+            </div>
+            <div class="task-item">
+                <span>Weekly Team Meeting</span>
+                <span>Due: 28 January 2025</span>
+                <span>Priority: Medium</span>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 30%"></div>
+                </div>
+                <span>30% Complete</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatDate(date) {
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            return date.toLocaleDateString('en-US', options);
+        }
+        document.getElementById('currentDate').textContent = formatDate(new Date());
+    </script>
+</body>
+</html>
