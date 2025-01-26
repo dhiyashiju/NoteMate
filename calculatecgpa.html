@@ -5,6 +5,37 @@
     <meta charset="UTF-8">
     <title>CGPA Calculator</title>
     <link href="calculatecgpa.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>CGPA Calculator</title>
+    <link href="calculatecgpa.css" rel="stylesheet">
+    <!-- Add Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+         html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-image: url('image1.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+j
+        .calculator-container {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(5px);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+     </style>
+</head>
+<body>
+    <!-- Rest of your existing HTML content -->
+    <script src="script.js"></script>
+</body>
+</html>
 </head>
 
 <body>
@@ -129,6 +160,278 @@
             document.getElementById("subjects-container").appendChild(subjectContainer);
         });
 
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    // Marking system selection toggle
+    const classWiseRadio = document.getElementById('class-wise');
+    const semesterWiseRadio = document.getElementById('semester-wise');
+    const classDropdown = document.getElementById('class-dropdown');
+    const semesterDropdown = document.getElementById('semester-dropdown');
+
+    classWiseRadio.addEventListener('change', function() {
+        classDropdown.classList.remove('hidden');
+        semesterDropdown.classList.add('hidden');
+    });
+
+    semesterWiseRadio.addEventListener('change', function() {
+        semesterDropdown.classList.remove('hidden');
+        classDropdown.classList.add('hidden');
+    });
+
+    // Add subject button functionality
+    const addSubjectBtn = document.getElementById('add-subject-btn');
+    const subjectsContainer = document.getElementById('subjects-container');
+
+    addSubjectBtn.addEventListener('click', function(event) {
+        event.preventDefault();
+
+        // Create subject container
+        const subjectContainer = document.createElement('div');
+        subjectContainer.className = 'subject-container';
+
+        // Create subject name input
+        const subjectNameInput = document.createElement('input');
+        subjectNameInput.type = 'text';
+        subjectNameInput.name = 'subject-name';
+        subjectNameInput.placeholder = 'Subject Name';
+        subjectNameInput.required = true;
+
+        // Create subject marks input
+        const subjectMarksInput = document.createElement('input');
+        subjectMarksInput.type = 'number';
+        subjectMarksInput.name = 'subject-marks';
+        subjectMarksInput.placeholder = 'Marks';
+        subjectMarksInput.max = document.getElementById('total-marks').value;
+        subjectMarksInput.required = true;
+
+        // Create remove button
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = 'Remove';
+        removeBtn.addEventListener('click', function() {
+            subjectContainer.remove();
+        });
+
+        // Append inputs and remove button to container
+        subjectContainer.appendChild(subjectNameInput);
+        subjectContainer.appendChild(subjectMarksInput);
+        subjectContainer.appendChild(removeBtn);
+
+        // Add to subjects container
+        subjectsContainer.appendChild(subjectContainer);
+    });
+
+    // CGPA Calculation
+    const calculateCgpaBtn = document.getElementById('calculate-cgpa-btn');
+    const cgpaValueDisplay = document.getElementById('cgpa-value');
+    const performanceChart = document.getElementById('performance-chart');
+
+    calculateCgpaBtn.addEventListener('click', function() {
+        const totalMarks = parseFloat(document.getElementById('total-marks').value);
+        const subjectContainers = document.querySelectorAll('#subjects-container .subject-container');
+        
+        if (subjectContainers.length === 0) {
+            alert('Please add at least one subject');
+            return;
+        }
+
+        let totalSubjectMarks = 0;
+        let validSubjects = 0;
+
+        // Calculate total marks and validate inputs
+        subjectContainers.forEach(container => {
+            const subjectNameInput = container.querySelector('input[name="subject-name"]');
+            const subjectMarksInput = container.querySelector('input[name="subject-marks"]');
+            
+            const subjectName = subjectNameInput.value.trim();
+            const subjectMarks = parseFloat(subjectMarksInput.value);
+
+            if (subjectName && !isNaN(subjectMarks)) {
+                if (subjectMarks > totalMarks) {
+                    alert(`Marks for ${subjectName} cannot exceed ${totalMarks}`);
+                    return;
+                }
+                totalSubjectMarks += subjectMarks;
+                validSubjects++;
+            }
+        });
+
+        // Calculate CGPA (on a 10-point scale)
+        if (validSubjects > 0) {
+            const averagePercentage = (totalSubjectMarks / (validSubjects * totalMarks)) * 100;
+            let cgpa;
+
+            // CGPA conversion (example grading scale)
+            if (averagePercentage >= 90) cgpa = 10.0;
+            else if (averagePercentage >= 80) cgpa = 9.0;
+            else if (averagePercentage >= 70) cgpa = 8.0;
+            else if (averagePercentage >= 60) cgpa = 7.0;
+            else if (averagePercentage >= 50) cgpa = 6.0;
+            else if (averagePercentage >= 40) cgpa = 5.0;
+            else cgpa = 4.0;
+
+            cgpaValueDisplay.textContent = cgpa.toFixed(2);
+
+            // Create performance chart (using Chart.js)
+            if (window.Chart) {
+                const ctx = performanceChart.getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: Array.from(subjectContainers).map(container => 
+                            container.querySelector('input[name="subject-name"]').value
+                        ),
+                        datasets: [{
+                            label: 'Subject Marks',
+                            data: Array.from(subjectContainers).map(container => 
+                                parseFloat(container.querySelector('input[name="subject-marks"]').value)
+                            ),
+                            backgroundColor: 'rgba(75, 192, 192, 0.6)'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: totalMarks
+                            }
+                        }
+                    }
+                });
+            }
+        } else {
+            cgpaValueDisplay.textContent = 'N/A';
+            alert('Please enter valid subject names and marks');
+        }
+    });
+});
+    </script>
+    <script>
+        // Performance Graph Function
+function createPerformanceGraph(subjects, totalMarks) {
+    const ctx = document.getElementById('performance-chart').getContext('2d');
+    
+    // Prepare data for chart
+    const subjectNames = subjects.map(subject => subject.name);
+    const subjectMarks = subjects.map(subject => subject.marks);
+
+    // Color generation based on performance
+    const getColorForMark = (mark) => {
+        const percentage = (mark / totalMarks) * 100;
+        if (percentage >= 90) return 'rgba(0, 255, 0, 0.6)';  // Green for excellent
+        if (percentage >= 75) return 'rgba(75, 192, 192, 0.6)';  // Teal for very good
+        if (percentage >= 60) return 'rgba(255, 206, 86, 0.6)';  // Yellow for good
+        if (percentage >= 40) return 'rgba(255, 159, 64, 0.6)';  // Orange for average
+        return 'rgba(255, 99, 132, 0.6)';  // Red for poor
+    };
+
+    const backgroundColors = subjectMarks.map(mark => getColorForMark(mark));
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: subjectNames,
+            datasets: [{
+                label: 'Subject Performance',
+                data: subjectMarks,
+                backgroundColor: backgroundColors,
+                borderColor: backgroundColors.map(color => color.replace('0.6)', '1)')),
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: totalMarks,
+                    title: {
+                        display: true,
+                        text: 'Marks'
+                    }
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Subject-wise Performance Analysis'
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const mark = context.parsed.y;
+                            const totalMarks = context.chart.options.scales.y.max;
+                            const percentage = ((mark / totalMarks) * 100).toFixed(2);
+                            return `Marks: ${mark}/${totalMarks} (${percentage}%)`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Modify existing CGPA calculation to include graph
+calculateCgpaBtn.addEventListener('click', function() {
+    const totalMarks = parseFloat(document.getElementById('total-marks').value);
+    const subjectContainers = document.querySelectorAll('#subjects-container .subject-container');
+    
+    if (subjectContainers.length === 0) {
+        alert('Please add at least one subject');
+        return;
+    }
+
+    let totalSubjectMarks = 0;
+    let validSubjects = 0;
+    const subjects = [];
+
+    // Collect and validate subject data
+    subjectContainers.forEach(container => {
+        const subjectNameInput = container.querySelector('input[name="subject-name"]');
+        const subjectMarksInput = container.querySelector('input[name="subject-marks"]');
+        
+        const subjectName = subjectNameInput.value.trim();
+        const subjectMarks = parseFloat(subjectMarksInput.value);
+
+        if (subjectName && !isNaN(subjectMarks)) {
+            if (subjectMarks > totalMarks) {
+                alert(`Marks for ${subjectName} cannot exceed ${totalMarks}`);
+                return;
+            }
+            subjects.push({ name: subjectName, marks: subjectMarks });
+            totalSubjectMarks += subjectMarks;
+            validSubjects++;
+        }
+    });
+
+    // Calculate CGPA
+    if (validSubjects > 0) {
+        const averagePercentage = (totalSubjectMarks / (validSubjects * totalMarks)) * 100;
+        let cgpa;
+
+        // CGPA conversion
+        if (averagePercentage >= 90) cgpa = 10.0;
+        else if (averagePercentage >= 80) cgpa = 9.0;
+        else if (averagePercentage >= 70) cgpa = 8.0;
+        else if (averagePercentage >= 60) cgpa = 7.0;
+        else if (averagePercentage >= 50) cgpa = 6.0;
+        else if (averagePercentage >= 40) cgpa = 5.0;
+        else cgpa = 4.0;
+
+        cgpaValueDisplay.textContent = cgpa.toFixed(2);
+
+        // Create performance graph
+        if (window.Chart) {
+            createPerformanceGraph(subjects, totalMarks);
+        } else {
+            console.error('Chart.js is not loaded');
+        }
+    } else {
+        cgpaValueDisplay.textContent = 'N/A';
+        alert('Please enter valid subject names and marks');
+    }
+});
     </script>
 </body>
 
