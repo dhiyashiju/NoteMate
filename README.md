@@ -1,39 +1,38 @@
-# [Project Name] 🎯
+# NoteMate 🎯
 
 
 ## Basic Details
-### Team Name: [Name]
+### Team Name: Powerpuff Girlss
 
 
 ### Team Members
-- Member 1: [Name] - [College]
-- Member 2: [Name] - [College]
-- Member 3: [Name] - [College]
+- Member 1: Dhiya A Shiju - SCMS Cochin School of Business
+- Member 2: Irfana Nasar- SCMS Cochin School of Business
+- Member 3: Riya Martin- SCMS Cochin of Business
 
 ### Hosted Project Link
-[mention your project hosted project link here]
+(https://github.com/dhiyashiju/NoteMate/tree/master)
 
 ### Project Description
-[2-3 lines about what your project does]
+Notemate is a productivity app designed to optimize time management with personalized timetables, collaborative project task assignment, community-based assignment sharing, and academic performance tracking through CGPA calculation and visualized progress graphs.
 
 ### The Problem statement
-[What ridiculous problem are you solving?]
+Before NoteMate, students and professionals often struggled with chaotic schedules, missed deadlines, and ineffective time management. Group projects turned into a mess of miscommunication and uneven task distribution, while academic tracking felt cumbersome with manual CGPA calculations and unclear performance insights. Assignments shared in communities relied on scattered platforms, leading to confusion and delayed submissions. NoteMate solves these issues by offering an all-in-one solution: personalized timetables, streamlined project collaboration, seamless assignment updates, and automated CGPA calculation with performance graphs—all in one app. It transforms productivity from a challenge into a seamless experience.
 
 ### The Solution
-[How are you solving it? Keep it fun!]
+The chaos was real. Students were drowning in sticky notes, missed deadlines, and that one friend in every group project who vanishes faster than free pizza. Teachers? They were tired of yelling, "Check your email!" only for assignments to disappear into a black hole of unread messages. And don’t even get us started on calculating CGPAs—it was basically rocket science with fewer calculators and more tears.  
+
+Enter NoteMate, our superhero in app form. We gave your sticky notes a retirement plan, turned group projects into team efforts (even that disappearing friend had nowhere to hide), and made sure assignments landed directly where they belonged—no more "I didn’t get the memo" excuses. And for the math-challenged, we took CGPA calculations from "huh?" to "oh wow, look at my graph!" in seconds.  
+
+NoteMate didn’t just organize productivity; it saved friendships, lowered caffeine dependency, and made time management almost...fun. You're welcome, world.
 
 ## Technical Details
 ### Technologies/Components Used
 For Software:
-- [Languages used]
-- [Frameworks used]
-- [Libraries used]
-- [Tools used]
+- HTML,CSS,JavaScript
 
-For Hardware:
-- [List main components]
-- [List specifications]
-- [List tools required]
+- Visual Studio,GitHub
+
 
 ### Implementation
 For Software:
@@ -41,7 +40,7 @@ For Software:
 [commands]
 
 # Run
-[commands]
+Nil
 
 ### Project Documentation
 For Software:
