@@ -25,6 +25,7 @@ a{
 }
 
 .logo {
+    
     font-size: 24px;
     font-weight: bold;
     color: #333;
@@ -65,7 +66,7 @@ a{
     margin-bottom: 20px;
 }
 
-.action-buttons button {
+.action-buttons a {
     padding: 10px 20px;
     background-color: #4CAF50;
     color: white;

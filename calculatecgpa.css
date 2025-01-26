@@ -1,0 +1,114 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+.calculator-container {
+    width: 100%;
+    max-width: 600px;
+}
+
+.card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.card-header h2 {
+    margin: 0;
+    text-align: center;
+}
+
+.card-content {
+    padding: 20px;
+}
+
+.marking-system-selector {
+    margin-bottom: 15px;
+}
+
+.radio-group {
+    display: flex;
+    gap: 15px;
+}
+
+.dropdown-section,
+.marks-input,
+.subject-input {
+    margin-bottom: 15px;
+}
+
+.dropdown-section.hidden {
+    display: none;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.subjects-list {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.subjects-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.cgpa-results {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.performance-graph {
+    margin-top: 20px;
+    border-top: 1px solid #ddd;
+    padding-top: 15px;
+}
+
+#performance-chart {
+    width: 100%;
+    max-height: 300px;
+}
+
+.subject-container {
+    display: flex;
+    gap: 10px;
+}

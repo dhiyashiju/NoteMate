@@ -2,47 +2,154 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>TodoMaster</title>
-    <link rel="stylesheet" href="style.css">
+    <title>TodoMate - Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0e6ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 350px;
+            text-align: center;
+        }
+        .btn {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #6a5acd;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #d1c4e9;
+            border-radius: 5px;
+        }
+        #profileUploadSection {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        #profilePreview {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto;
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <div class="header">
-        <div class="logo">ToDoMaster</div>
-        <div class="date" id="currentDate"></div>
+    <div class="container" id="loginPage">
+        <h2>TodoMate</h2>
+        <button class="btn" onclick="showOptions()">Login</button>
     </div>
 
-    <div class="main-content">
-        <input type="text" class="search-bar" placeholder="Search tasks...">
-        
-        <p class="description">
-            Organize your tasks, boost your productivity, and stay on top of your goals.
-        </p>
-
-        <div class="action-buttons">
-            <button><a href="file:///C:/Users/HP/Desktop/Project/thingstodo.html">Things To Do</button>
-            <button><a href="file:///C:/Users/HP/Desktop/Project/mytimetable.html">My Time-Table</button>
-            <button><a href="file:///C:/Users/HP/Desktop/Project/groupproject.html">Group Project</button>
-            <button>My Community</button>
-            <button>Calculate My CGPA</button>
-        </div>
+    <div class="container" id="loginOptions" style="display:none;">
+        <h2>Choose Option</h2>
+        <button class="btn" onclick="showSignUp()">Sign Up</button>
+        <button class="btn" onclick="showExistingLogin()">Already Have an Account</button>
     </div>
 
+    <div class="container" id="signUpPage" style="display:none;">
+        <h2>Sign Up</h2>
+        <input type="email" class="input-field" id="signupEmail" placeholder="Email">
+        <input type="password" class="input-field" id="signupPassword" placeholder="Password">
+        <input type="text" class="input-field" id="signupUsername" placeholder="Username">
+        <button class="btn" onclick="showProfileSetup()">Sign Up</button>
+    </div>
 
-   
-
-    <div class="footer">
-        <div class="news-updates">
-            <h3>Latest News</h3>
-            <p>No updates at the moment.</p>
-        </div>
-        <div class="productivity-chart">
-            <div class="productivity-score">75%</div>
+    <div class="container" id="profileSetupPage" style="display:none;">
+        <h2>Profile Setup</h2>
+        <div id="profileUploadSection">
+            <label for="profilePicInput">Profile Picture (Optional)</label>
+            <input type="file" id="profilePicInput" accept="image/*" onchange="previewProfilePic(event)">
+            <img id="profilePreview" src="#" alt="Profile Preview">
+            <input type="number" class="input-field" id="ageInput" placeholder="Age">
+            <select class="input-field" id="genderSelect">
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+            <select class="input-field" id="occupationSelect">
+                <option value="">Select Occupation</option>
+                <option value="student">Student</option>
+                <option value="homemaker">Homemaker</option>
+                <option value="professional">Professional</option>
+            </select>
+            <button class="btn" onclick="completeProfileSetup()">Complete Profile</button>
         </div>
     </div>
 
     <script>
-        // Update current date
-        document.getElementById('currentDate').textContent = new Date().toLocaleDateString();
+        function showOptions() {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('loginOptions').style.display = 'block';
+        }
+
+        function showSignUp() {
+            document.getElementById('loginOptions').style.display = 'none';
+            document.getElementById('signUpPage').style.display = 'block';
+        }
+
+        function showExistingLogin() {
+            alert('Existing login functionality not implemented in this demo');
+        }
+
+        function showProfileSetup() {
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const username = document.getElementById('signupUsername').value;
+
+            if (email && password && username) {
+                document.getElementById('signUpPage').style.display = 'none';
+                document.getElementById('profileSetupPage').style.display = 'block';
+            } else {
+                alert('Please fill all signup fields');
+            }
+        }
+
+        function previewProfilePic(event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById('profilePreview');
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function completeProfileSetup() {
+            const age = document.getElementById('ageInput').value;
+            const gender = document.getElementById('genderSelect').value;
+            const occupation = document.getElementById('occupationSelect').value;
+
+            if (age && gender && occupation) {
+                // Redirect to home page
+                window.location.href = 'homepage.html';
+            } else {
+                alert('Please complete required profile setup fields');
+            }
+        }
     </script>
 </body>
 </html>

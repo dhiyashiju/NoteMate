@@ -22,8 +22,10 @@ body {
     color: #8a7db8;
 }
 
-.main-content {
-    padding: 20px;
+.main-content>div {
+
+    margin: 50px;
+ 
 }
 
 .timetable-setup {
@@ -124,8 +126,23 @@ body {
     min-width: 80px;
     color: #6a5acd;
 }
-.type-routine { background-color: #b39ddb; }
-.type-study { background-color: #d1c4e9; }
-.type-break { background-color: #e6d6ff; }
-.type-class { background-color: #9fa8da; }
-.type-leisure { background-color: #80deea; }
+
+.type-routine {
+    background-color: #b39ddb;
+}
+
+.type-study {
+    background-color: #d1c4e9;
+}
+
+.type-break {
+    background-color: #e6d6ff;
+}
+
+.type-class {
+    background-color: #9fa8da;
+}
+
+.type-leisure {
+    background-color: #80deea;
+}

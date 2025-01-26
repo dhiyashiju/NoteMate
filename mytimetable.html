@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>My Timetable | TodoMaster</title>
     <link rel="stylesheet" href="timetable-styles.css">
 </head>
+
 <body>
     <div class="header">
         <div class="logo">TodoMaster</div>
@@ -23,43 +25,44 @@
             </div>
             <div class="input-group">
                 <label>Daily Leisure Hours</label>
-                <input type="number" id="leisureHours" class="timetable-input"min="0" max="6">
+                <input type="number" id="leisureHours" class="timetable-input" min="0" max="6">
             </div>
-                    <div class="class-hours-setup">
-            <h3>Daily Class Hours</h3>
-            <div class="days-class-hours">
-                <div class="day-class-input">
-                    <label>Monday</label>
-                    <input type="time" id="mondayClassStart" class="class-time-input">
-                    <span>to</span>
-                    <input type="time" id="mondayClassEnd" class="class-time-input">
+            <div class="class-hours-setup">
+                <h3>Daily Class Hours</h3>
+                <div class="days-class-hours">
+                    <div class="day-class-input">
+                        <label>Monday</label>
+                        <input type="time" id="mondayClassStart" class="class-time-input">
+                        <span>to</span>
+                        <input type="time" id="mondayClassEnd" class="class-time-input">
+                    </div>
+                    <div class="day-class-input">
+                        <label>Tuesday</label>
+                        <input type="time" id="tuesdayClassStart" class="class-time-input">
+                        <span>to</span>
+                        <input type="time" id="tuesdayClassEnd" class="class-time-input">
+                    </div>
+                    <div class="day-class-input">
+                        <label>Wednesday</label>
+                        <input type="time" id="wednesdayClassStart" class="class-time-input">
+                        <span>to</span>
+                        <input type="time" id="wednesdayClassEnd" class="class-time-input">
+                    </div>
+                    <div class="day-class-input">
+                        <label>Thursday</label>
+                        <input type="time" id="thursdayClassStart" class="class-time-input">
+                        <span>to</span>
+                        <input type="time" id="thursdayClassEnd" class="class-time-input">
+                    </div>
+                    <div class="day-class-input">
+                        <label>Friday</label>
+                        <input type="time" id="fridayClassStart" class="class-time-input">
+                        <span>to</span>
+                        <input type="time" id="fridayClassEnd" class="class-time-input">
+                    </div>
                 </div>
-                <div class="day-class-input">
-                    <label>Tuesday</label>
-                    <input type="time" id="tuesdayClassStart" class="class-time-input">
-                    <span>to</span>
-                    <input type="time" id="tuesdayClassEnd" class="class-time-input">
-                </div>
-                <div class="day-class-input">
-                    <label>Wednesday</label>
-                    <input type="time" id="wednesdayClassStart" class="class-time-input">
-                    <span>to</span>
-                    <input type="time" id="wednesdayClassEnd" class="class-time-input">
-                </div>
-                <div class="day-class-input">
-                    <label>Thursday</label>
-                    <input type="time" id="thursdayClassStart" class="class-time-input">
-                    <span>to</span>
-                    <input type="time" id="thursdayClassEnd" class="class-time-input">
-                </div>
-                <div class="day-class-input">
-                    <label>Friday</label>
-                    <input type="time" id="fridayClassStart" class="class-time-input">
-                    <span>to</span>
-                    <input type="time" id="fridayClassEnd" class="class-time-input">
-                </div>
+                <button class="btn" onclick="generateTimetable()">Generate Timetable</button>
             </div>
-            <button class="btn" onclick="generateTimetable()">Generate Timetable</button>
         </div>
         <div class="weekly-timetable">
             <h2>Weekly Timetable</h2>
@@ -96,6 +99,8 @@
                 </div>
             </div>
         </div>
+
+
     </div>
 
     <script>
@@ -113,7 +118,7 @@
 
             // Placeholder for timetable generation logic
             const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-            
+
             days.forEach(day => {
                 const slots = document.getElementById(`${day}Slots`);
                 slots.innerHTML = ''; // Clear previous slots
@@ -140,5 +145,154 @@
             });
         }
     </script>
+    <script>
+        function generateTimetable() {
+    const wakeTime = document.getElementById('wakeTime').value;
+    const sleepTime = document.getElementById('sleepTime').value;
+    const leisureHours = parseInt(document.getElementById('leisureHours').value);
+
+    const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+
+    days.forEach(day => {
+        const dayClassStart = document.getElementById(`${day}ClassStart`).value;
+        const dayClassEnd = document.getElementById(`${day}ClassEnd`).value;
+        const slots = document.getElementById(`${day}Slots`);
+        slots.innerHTML = '';
+
+        const timeSlots = calculateTimeSlots(
+            wakeTime, 
+            sleepTime, 
+            leisureHours, 
+            dayClassStart, 
+            dayClassEnd, 
+            day
+        );
+
+        timeSlots.forEach(slot => {
+            const slotElement = document.createElement('div');
+            slotElement.classList.add('time-slot', `type-${slot.type}`);
+            slotElement.innerHTML = `
+                <span class="slot-time">${slot.time}</span>
+                <span class="slot-activity">${slot.activity}</span>
+            `;
+            slots.appendChild(slotElement);
+        });
+    });
+}
+
+function calculateTimeSlots(wakeTime, sleepTime, leisureHours, classStart, classEnd, day) {
+    const timeSlots = [];
+    const morningBuffer = 1; // Hour for morning routine
+    const studyBuffer = 2; // Hours for study preparation
+    const mealBuffer = 1.5; // Hours for meals
+
+    // Convert times to minutes for easier calculation
+    const wakeMinutes = timeToMinutes(wakeTime);
+    const sleepMinutes = timeToMinutes(sleepTime);
+    const classStartMinutes = timeToMinutes(classStart);
+    const classEndMinutes = timeToMinutes(classEnd);
+
+    // Calculate total available time
+    const totalAvailableMinutes = sleepMinutes - wakeMinutes;
+    const totalAvailableHours = totalAvailableMinutes / 60;
+
+    // Morning Routine
+    timeSlots.push({
+        time: wakeTime,
+        activity: 'Morning Routine',
+        type: 'routine'
+    });
+
+    // Study/Task Preparation Time
+    const studyStartTime = minutesToTime(wakeMinutes + (morningBuffer * 60));
+    timeSlots.push({
+        time: studyStartTime,
+        activity: 'Study Preparation',
+        type: 'study'
+    });
+
+    // Breakfast/Morning Prep
+    const breakfastTime = minutesToTime(wakeMinutes + ((morningBuffer + studyBuffer) * 60));
+    timeSlots.push({
+        time: breakfastTime,
+        activity: 'Breakfast & Prep',
+        type: 'break'
+    });
+
+    // Class Time (if specified)
+    if (classStart && classEnd) {
+        timeSlots.push({
+            time: classStart,
+            activity: 'Class Start',
+            type: 'class'
+        });
+        timeSlots.push({
+            time: classEnd,
+            activity: 'Class End',
+            type: 'class'
+        });
+    }
+
+    // Lunch Break
+    const lunchTime = minutesToTime(classEndMinutes + 30);
+    timeSlots.push({
+        time: lunchTime,
+        activity: 'Lunch Break',
+        type: 'break'
+    });
+
+    // Task Completion Time
+    const taskTime = minutesToTime(lunchTime + 60);
+    timeSlots.push({
+        time: taskTime,
+        activity: 'Task Completion',
+        type: 'study'
+    });
+
+    // Leisure Time
+    const leisureStartTime = minutesToTime(taskTime + 60);
+    timeSlots.push({
+        time: leisureStartTime,
+        activity: 'Leisure Time',
+        type: 'leisure'
+    });
+
+    // Dinner & Evening Prep
+    const dinnerTime = minutesToTime(sleepMinutes - (1.5 * 60));
+    timeSlots.push({
+        time: dinnerTime,
+        activity: 'Dinner & Evening Prep',
+        type: 'break'
+    });
+
+    // Bedtime Routine
+    timeSlots.push({
+        time: sleepTime,
+        activity: 'Bedtime Routine',
+        type: 'routine'
+    });
+
+    return timeSlots;
+}
+
+function timeToMinutes(time) {
+    if (!time) return 0;
+    const [hours, minutes] = time.split(':').map(Number);
+    return hours * 60 + minutes;
+}
+
+function minutesToTime(minutes) {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
+}
+
+// Add event listener to generate button
+document.addEventListener('DOMContentLoaded', () => {
+    const generateBtn = document.querySelector('.btn');
+    generateBtn.addEventListener('click', generateTimetable);
+});
+    </script>
 </body>
+
 </html>

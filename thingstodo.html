@@ -64,8 +64,7 @@
 </head>
 <body>
     <div class="header">
-        <div class="logo">TodoMaster</div>
-        <div class="date" id="currentDate"></div>
+        <div class="logo">NoteMate</div>
     </div>
 
     <div class="main-content">
@@ -114,5 +113,103 @@
         }
         document.getElementById('currentDate').textContent = formatDate(new Date());
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    const taskInput = document.querySelector('.task-input');
+    const dateInput = document.querySelector('input[type="datetime-local"]');
+    const priorityDropdown = document.querySelector('.priority-dropdown');
+    const addTaskBtn = document.querySelector('.btn');
+    const taskList = document.querySelector('.task-list');
+
+    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+    function createProgressBubbles(progress, taskId) {
+        const bubbleContainer = document.createElement('div');
+        bubbleContainer.classList.add('progress-bubbles');
+        bubbleContainer.style.display = 'flex';
+        bubbleContainer.style.gap = '5px';
+
+        for (let i = 1; i <= 10; i++) {
+            const bubble = document.createElement('div');
+            bubble.style.width = '20px';
+            bubble.style.height = '20px';
+            bubble.style.borderRadius = '50%';
+            bubble.style.backgroundColor = i <= progress / 10 ? '#6a5acd' : '#e0e0e0';
+            bubble.style.cursor = 'pointer';
+
+            bubble.addEventListener('click', () => {
+                const updatedProgress = i * 10;
+                const taskIndex = tasks.findIndex(t => t.id === taskId);
+                if (taskIndex !== -1) {
+                    tasks[taskIndex].progress = updatedProgress;
+                    localStorage.setItem('tasks', JSON.stringify(tasks));
+                    renderTasks();
+                }
+            });
+
+            bubbleContainer.appendChild(bubble);
+        }
+
+        return bubbleContainer;
+    }
+
+    function renderTasks() {
+        const tasksContainer = document.querySelector('.task-list');
+        tasksContainer.innerHTML = '<h2>Previous Tasks</h2>';
+
+        tasks.forEach(task => {
+            const taskElement = document.createElement('div');
+            taskElement.classList.add('task-item');
+            taskElement.innerHTML = `
+                <span>${task.name}</span>
+                <span>Due: ${formatDate(new Date(task.date))}</span>
+                <span>Priority: ${task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}</span>
+                <div class="progress-bar">
+                    <div class="progress" style="width: ${task.progress}%"></div>
+                </div>
+                <span>${task.progress}% Complete</span>
+            `;
+
+            const progressBubbles = createProgressBubbles(task.progress, task.id);
+            taskElement.appendChild(progressBubbles);
+            tasksContainer.appendChild(taskElement);
+        });
+    }
+
+    addTaskBtn.addEventListener('click', () => {
+        const taskName = taskInput.value.trim();
+        const taskDate = dateInput.value;
+        const taskPriority = priorityDropdown.value;
+
+        if (taskName && taskDate && taskPriority) {
+            const newTask = {
+                id: Date.now(),
+                name: taskName,
+                date: taskDate,
+                priority: taskPriority,
+                progress: 0 // Start at 0% progress
+            };
+
+            tasks.push(newTask);
+            localStorage.setItem('tasks', JSON.stringify(tasks));
+            renderTasks();
+
+            // Reset inputs
+            taskInput.value = '';
+            dateInput.value = '';
+            priorityDropdown.selectedIndex = 0;
+        }
+    });
+
+    function formatDate(date) {
+        const options = { day: 'numeric', month: 'long', year: 'numeric' };
+        return date.toLocaleDateString('en-US', options);
+    }
+
+    // Initial render of tasks
+    renderTasks();
+});
+</script>
+
 </body>
 </html>

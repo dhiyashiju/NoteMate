@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Community</title>
+  <link rel="stylesheet" href="community-page.css">
+</head>
+<body>
+  <div class="container">
+    <h1>My Community</h1>
+
+    <div class="add-community">
+      <input type="text" placeholder="Add a new community">
+      <button>Add</button>
+    </div>
+
+    <div class="community-list">
+      <div class="community-item">
+        <div class="community-header">
+          <span class="community-name">Math</span>
+          <span class="incomplete-tasks">3 Incomplete Tasks</span>
+        </div>
+        <div class="add-task-section">
+          <input type="text" placeholder="Enter task name">
+          <input type="datetime-local" placeholder="Deadline">
+          <button>Add Task</button>
+        </div>
+        <div class="task-board">
+          <div class="task-list">
+            <div class="task-item">
+              <span class="task-name">Linear Algebra Homework</span>
+              <span class="task-deadline">Due: 2023-04-15</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="community-item">
+        <div class="community-header">
+          <span class="community-name">Economics</span>
+          <span class="incomplete-tasks">1 Incomplete Task</span>
+        </div>
+        <div class="add-task-section">
+          <input type="text" placeholder="Enter task name">
+          <input type="datetime-local" placeholder="Deadline">
+          <button>Add Task</button>
+        </div>
+        <div class="task-board">
+          <!-- Any tasks for Economics would go here -->
+        </div>
+      </div>
+
+      <div class="community-item">
+        <div class="community-header">
+          <span class="community-name">Computer Science</span>
+          <span class="incomplete-tasks">5 Incomplete Tasks</span>
+        </div>
+        <div class="add-task-section">
+          <input type="text" placeholder="Enter task name">
+          <input type="datetime-local" placeholder="Deadline">
+          <button>Add Task</button>
+        </div>
+        <div class="task-board">
+          <!-- Any tasks for Computer Science would go here -->
+        </div>
+      </div>
+
+      <div class="community-item">
+        <div class="community-header">
+          <span class="community-name">Physics</span>
+          <span class="incomplete-tasks">0 Incomplete Tasks</span>
+        </div>
+        <div class="add-task-section">
+          <input type="text" placeholder="Enter task name">
+          <input type="datetime-local" placeholder="Deadline">
+          <button>Add Task</button>
+        </div>
+        <div class="task-board">
+          <!-- Any tasks for Physics would go here -->
+        </div>
+      </div>
+    </div>
+
+    <div class="incomplete-tasks-section">
+      <h2>Incomplete Tasks</h2>
+      <div class="task-item">
+        <span class="task-name">Linear Algebra Homework</span>
+        <span class="task-deadline">Due: 2023-04-15</span>
+        <div class="file-upload">
+          <label for="file-upload">Upload File:</label>
+          <input type="file" id="file-upload" name="file-upload">
+          <button class="submit-btn">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const addCommunityInput = document.querySelector('.add-community input');
+    const addCommunityBtn = document.querySelector('.add-community button');
+    const communityList = document.querySelector('.community-list');
+
+    // Load existing communities and tasks from localStorage
+    let communities = JSON.parse(localStorage.getItem('communities')) || [];
+
+    // Add Community Functionality
+    addCommunityBtn.addEventListener('click', () => {
+        const communityName = addCommunityInput.value.trim();
+        if (communityName) {
+            addCommunity(communityName);
+            addCommunityInput.value = '';
+        }
+    });
+
+    function addCommunity(name) {
+        const newCommunity = {
+            name: name,
+            tasks: []
+        };
+        communities.push(newCommunity);
+        saveCommunities();
+        renderCommunities();
+    }
+
+    function renderCommunities() {
+        communityList.innerHTML = '';
+        communities.forEach((community, index) => {
+            const communityElement = createCommunityElement(community, index);
+            communityList.appendChild(communityElement);
+        });
+    }
+
+    function createCommunityElement(community, communityIndex) {
+        const communityItem = document.createElement('div');
+        communityItem.classList.add('community-item');
+        communityItem.innerHTML = `
+            <div class="community-header">
+                <span class="community-name">${community.name}</span>
+                <span class="incomplete-tasks">${community.tasks.filter(task => !task.completed).length} Incomplete Tasks</span>
+            </div>
+            <div class="add-task-section">
+                <input type="text" placeholder="Enter task name">
+                <input type="datetime-local" placeholder="Deadline">
+                <button>Add Task</button>
+            </div>
+            <div class="task-board">
+                <div class="task-list"></div>
+            </div>
+        `;
+
+        const taskInput = communityItem.querySelector('.add-task-section input[type="text"]');
+        const deadlineInput = communityItem.querySelector('.add-task-section input[type="datetime-local"]');
+        const addTaskBtn = communityItem.querySelector('.add-task-section button');
+        const taskList = communityItem.querySelector('.task-list');
+
+        // Render existing tasks
+        community.tasks.forEach(task => {
+            const taskElement = createTaskElement(task);
+            taskList.appendChild(taskElement);
+        });
+
+        // Add Task Functionality
+        addTaskBtn.addEventListener('click', () => {
+            const taskName = taskInput.value.trim();
+            const deadline = deadlineInput.value;
+            if (taskName && deadline) {
+                const newTask = {
+                    name: taskName,
+                    deadline: deadline,
+                    completed: false
+                };
+                communities[communityIndex].tasks.push(newTask);
+                saveCommunities();
+                renderCommunities();
+                taskInput.value = '';
+                deadlineInput.value = '';
+            }
+        });
+
+        return communityItem;
+    }
+
+    function createTaskElement(task) {
+        const taskElement = document.createElement('div');
+        taskElement.classList.add('task-item');
+        taskElement.innerHTML = `
+            <span class="task-name">${task.name}</span>
+            <span class="task-deadline">Due: ${formatDeadline(task.deadline)}</span>
+        `;
+        return taskElement;
+    }
+
+    function formatDeadline(deadline) {
+        return new Date(deadline).toLocaleDateString();
+    }
+
+    function saveCommunities() {
+        localStorage.setItem('communities', JSON.stringify(communities));
+    }
+
+    // Initial render
+    renderCommunities();
+});
+  </script>
+</body>
+</html>

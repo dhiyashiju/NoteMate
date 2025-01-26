@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>CGPA Calculator</title>
+    <link href="calculatecgpa.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="calculator-container">
+        <div class="card">
+            <div class="card-header">
+                <h2>CGPA Calculator</h2>
+            </div>
+            <div class="card-content">
+                <div class="marking-system-selector">
+                    <label>Marking System:</label>
+                    <div class="radio-group">
+                        <input type="radio" id="class-wise" name="marking-system" value="class">
+                        <label for="class-wise">Class-wise</label>
+
+                        <input type="radio" id="semester-wise" name="marking-system" value="semester">
+                        <label for="semester-wise">Semester-wise</label>
+                    </div>
+                </div>
+
+                <div id="class-dropdown" class="dropdown-section">
+                    <label for="class-select">Select Class:</label>
+                    <select id="class-select">
+                        <option value="">Choose Class</option>
+                        <option value="1">Class 1</option>
+                        <option value="2">Class 2</option>
+                        <option value="3">Class 3</option>
+                        <option value="4">Class 4</option>
+                        <option value="5">Class 5</option>
+                        <option value="6">Class 6</option>
+                        <option value="7">Class 7</option>
+                        <option value="8">Class 8</option>
+                        <option value="9">Class 9</option>
+                        <option value="10">Class 10</option>
+                        <option value="11">Class 11</option>
+                        <option value="12">Class 12</option>
+                    </select>
+                </div>
+
+                <div id="semester-dropdown" class="dropdown-section hidden">
+                    <label for="semester-select">Select Semester:</label>
+                    <select id="semester-select">
+                        <option value="">Choose Semester</option>
+                        <option value="1">Semester 1</option>
+                        <option value="2">Semester 2</option>
+                        <option value="3">Semester 3</option>
+                        <option value="4">Semester 4</option>
+                        <option value="5">Semester 5</option>
+                        <option value="6">Semester 6</option>
+                        <option value="7">Semester 7</option>
+                        <option value="8">Semester 8</option>
+                        <option value="9">Semester 9</option>
+                        <option value="10">Semester 10</option>
+                    </select>
+                </div>
+
+                <div class="marks-input">
+                    <label for="total-marks">Total Marks:</label>
+                    <input type="number" id="total-marks" value="100">
+                </div>
+
+                <div class="subject-input">
+                    <button id="add-subject-btn">Add Subject</button>
+                    <div class="subject-container">
+                        <input type="text" id="subject-name" placeholder="Enter subject name">
+                        <input type="number" id="subject-marks" placeholder="Enter marks">
+                    </div>
+                    <div id="subjects-container">
+
+                    </div>
+                </div>
+
+
+
+                <div class="cgpa-results">
+                    <div class="cgpa-display">
+                        <strong>CGPA: </strong>
+                        <span id="cgpa-value">N/A</span>
+                    </div>
+                    <button id="calculate-cgpa-btn">Calculate CGPA</button>
+                </div>
+
+                <div class="performance-graph">
+                    <h3>Academic Performance</h3>
+                    <canvas id="performance-chart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+
+    <script>
+        document.getElementById("add-subject-btn").addEventListener("click", function (event) {
+            event.preventDefault(); // Prevent form submission if inside a form
+
+            // Create a container for the new subject fields
+
+
+            let subjectContainer = document.createElement('div')
+
+            // Create input for subject name
+            const subjectNameInput = document.createElement("input");
+            subjectNameInput.type = "text";
+            subjectNameInput.name = "subject-name";
+            subjectNameInput.placeholder = "Subject Name";
+            subjectNameInput.required = true;
+
+            // Create input for subject marks
+            const subjectMarksInput = document.createElement("input");
+            subjectMarksInput.type = "number";
+            subjectMarksInput.name = "subject-marks";
+            subjectMarksInput.placeholder = "Marks";
+            subjectMarksInput.required = true;
+
+
+            subjectContainer.className = 'subject-container'
+            // Add inputs to the subject container
+            subjectContainer.appendChild(subjectNameInput);
+            subjectContainer.appendChild(subjectMarksInput);
+
+            // Append the new container to the subjects list
+            document.getElementById("subjects-container").appendChild(subjectContainer);
+        });
+
+    </script>
+</body>
+
+</html>

@@ -70,5 +70,123 @@
             container.appendChild(newPartEntry);
         });
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    const addPartBtn = document.getElementById('add-part-btn');
+    const submitProjectBtn = document.getElementById('submit-project-btn');
+    const projectNameInput = document.getElementById('project-name');
+    const projectPartsContainer = document.getElementById('project-parts-container');
+
+    // Project storage
+    let projects = JSON.parse(localStorage.getItem('groupProjects')) || [];
+
+    addPartBtn.addEventListener('click', () => {
+        const container = document.getElementById('project-parts-container');
+        const newPartEntry = document.querySelector('.part-entry').cloneNode(true);
+        
+        // Reset input values for new entry
+        newPartEntry.querySelector('.part-name').value = '';
+        newPartEntry.querySelector('.member-email').value = '';
+        newPartEntry.querySelector('.status-dropdown').selectedIndex = 0;
+        newPartEntry.querySelector('#file-upload').value = '';
+        
+        container.appendChild(newPartEntry);
+    });
+
+    submitProjectBtn.addEventListener('click', () => {
+        // Validate project name
+        if (!projectNameInput.value.trim()) {
+            alert('Please enter a project name');
+            return;
+        }
+
+        // Collect project parts
+        const projectParts = Array.from(document.querySelectorAll('.part-entry')).map(entry => ({
+            name: entry.querySelector('.part-name').value,
+            memberEmail: entry.querySelector('.member-email').value,
+            status: entry.querySelector('.status-dropdown').value,
+            hasFile: entry.querySelector('#file-upload').files.length > 0
+        }));
+
+        // Validate project parts
+        const invalidParts = projectParts.filter(part => 
+            !part.name.trim() || !part.memberEmail.trim()
+        );
+
+        if (invalidParts.length > 0) {
+            alert('Please fill in all part names and member emails');
+            return;
+        }
+
+        // Create project object
+        const newProject = {
+            id: Date.now(),
+            name: projectNameInput.value,
+            createdAt: new Date().toISOString(),
+            parts: projectParts,
+            status: calculateProjectStatus(projectParts)
+        };
+
+        // Add to projects array
+        projects.push(newProject);
+
+        // Save to localStorage
+        localStorage.setItem('groupProjects', JSON.stringify(projects));
+
+        // Update previous projects view
+        updatePreviousProjects();
+
+        // Reset form
+        projectNameInput.value = '';
+        projectPartsContainer.innerHTML = `
+            <div class="part-entry">
+                <input type="text" class="part-name" placeholder="Part Name" required>
+                <input type="email" class="member-email" placeholder="Member Email" required>
+                <select class="status-dropdown">
+                    <option value="not-started">Not Started</option>
+                    <option value="doing">Doing</option>
+                    <option value="paused">Paused</option>
+                    <option value="rework">Rework</option>
+                    <option value="done">Done</option>
+                </select>
+                <div class="file-upload">
+                    <label for="file-upload">Upload File:</label>
+                    <input type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png" id="file-upload">
+                </div>
+            </div>
+        `;
+
+        alert('Project created successfully!');
+    });
+
+    function calculateProjectStatus(parts) {
+        const statuses = parts.map(part => part.status);
+        
+        if (statuses.every(status => status === 'done')) return 'completed';
+        if (statuses.some(status => status === 'doing' || status === 'rework')) return 'in-progress';
+        return 'pending';
+    }
+
+    function updatePreviousProjects() {
+        const projectListContainer = document.querySelector('.project-list');
+        projectListContainer.innerHTML = '';
+
+        projects.forEach(project => {
+            const projectElement = document.createElement('div');
+            projectElement.classList.add('project-item');
+            
+            projectElement.innerHTML = `
+                <div class="project-name">${project.name}</div>
+                <div class="project-status ${project.status}">${project.status.charAt(0).toUpperCase() + project.status.slice(1)}</div>
+            `;
+
+            projectListContainer.appendChild(projectElement);
+        });
+    }
+
+    // Initial load of previous projects
+    updatePreviousProjects();
+});
+    </script>
 </body>
 </html>
